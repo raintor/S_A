@@ -79,4 +79,10 @@ public class Solution {
         String str = "abaaefg";
         System.out.println(longestPalindrome(str));
     }
+    public void test2(){
+        String str = "abaaefg";
+        System.out.println(longestPalindrome(str));
+    }
+
+
 }
