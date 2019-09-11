@@ -39,18 +39,78 @@ public class Solution {
         int n = nums.length;
         int i = 0;
         int j = n-1;
-        while (nums[i]>nums[j]){
-            if(j - i == 1){
-                return j;
-            }
-
+        int minindex = getMinIndex(nums,i,j);
+        if(nums[minindex] == target){
+            return minindex;
+        }
+        if(target>=nums[i]&&target>nums[j]){
+            return distribution(nums,i,minindex-1,target);
+        }
+        if(target>nums[minindex]&&target<=nums[j]){
+            return distribution(nums,minindex+1,j,target);
         }
         return -1;
     }
 
+    private int distribution(int[] nums, int l, int r,int target) {
+        while (l<=r){
+            int mid = (l + r)/2;
+            if(nums[mid]>target){
+                r = mid-1;
+            }else if(nums[mid]<target){
+                l = mid +1;
+            }else {
+                return mid;
+            }
+        }
+        return -1;
+    }
+
+    private int getMinIndex(int[] nums, int i, int j) {
+        int p1 = i;
+        int p2 = j;
+        int minIndex = 0;
+        if(nums[i]<nums[j])
+            return i;
+        while (nums[i]>=nums[j]){
+            if(p2 - p1 == 1){
+                minIndex = p2;
+            }
+            minIndex = p1 + (p2 - p1)/2;
+            if(nums[p1] == nums[minIndex]&&nums[p2] == nums[p2]){
+                return inOrder(nums,p1,p2);
+            }
+            if(nums[minIndex]>=nums[p1]){
+                p1 = minIndex;
+            }
+            if(nums[p2]>=nums[minIndex]){
+                p2 = minIndex;
+            }
+        }
+        return minIndex;
+    }
+
+    private int inOrder(int[] nums, int p1, int p2) {
+        int minIndex = p1;
+        int min = nums[p1];
+        for(int i = p1+1;i<=p2;i++){
+            if(nums[i]<min){
+                min = nums[i];
+                minIndex = i;
+            }
+        }
+        return minIndex;
+    }
+
+    /**
+     * 思路：找到旋转数组中最小的元素所在的位置，然后将target与最小值和左右指针值比较，分段使用二分法
+     * 注意：由于查找元素可能在0索引处，所以循环条件是i<=j。每次的索引变化就是mid+-1.
+     *
+     * 由此可知，二分法找元素，不用递归就是while(l<=r),每次更新l或r = mid+1/-1.
+     */
     @Test
     public void test(){
-        int[] nums = {4,5,6,7,0,1,2};
-        System.out.println(search(nums,4));
+        int[] nums = {1,3};
+        System.out.println(search(nums,3));
     }
 }

@@ -1,4 +1,4 @@
-package jianzhi_Offer.Q1_寻找重复数字;
+package jianzhi_Offer.Q3_寻找重复数字;
 
 import org.junit.Test;
 
