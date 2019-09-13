@@ -46,24 +46,27 @@ public class ch66_简单组合问题 {
         }
         used = new boolean[nums.length];
         List<Integer> sub = new ArrayList<>();
-        getCombina(nums,k,0,sub);
+        getCombina(nums,k,1,sub);
         return list;
     }
 
     private void getCombina(int[] nums, int k, int index, List<Integer> sub) {
-        if(index == k){
-            list.add(new ArrayList<>(sub));
-            return;
-        }
-        for(int i = index;i<nums.length;i++){
-            if(!used[i]){
-                sub.add(nums[i]);
-                used[i] = true;
-                getCombina(nums,k,i,sub);
-                sub.remove(sub.size()-1);
-                used[i] = false;
-            }
-
-        }
+       if(sub.size() == k){
+           list.add(new ArrayList<>(sub));
+           return;
+       }
+       for(int i = index;i<nums.length;i++){
+           sub.add(nums[i]);
+           getCombina(nums,k,i+1,sub);
+           sub.remove(sub.size()-1);
+       }
     }
+    /**
+     * 组合问题不同于排列问题，组合问题强调的是组合，也就是说 [1,2]跟[2,1]是同一个
+     * 组合，但是是不同的排列
+     * 所以对于简单的组合问题，关键就是去除重复的组合，根据组合的过程可以看出，前面组合过的数，
+     * 在后面的数组合的时候，不与考虑
+     * 所以递归循环的条件就是
+     * 从当前开始，每次递归的是当前循环i的i+1，作为下一个的开始，这样能有效的控制。
+     */
 }
