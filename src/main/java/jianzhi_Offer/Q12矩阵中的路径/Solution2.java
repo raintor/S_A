@@ -1,5 +1,8 @@
 package jianzhi_Offer.Q12矩阵中的路径;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * @author: raintor
  * @Date: 2019/9/13 21:45
@@ -23,5 +26,60 @@ package jianzhi_Offer.Q12矩阵中的路径;
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class Solution2 {
+    class Node{
+        int x;
+        int y;
+        int val;
 
+        public Node(int x, int y, int val) {
+            this.x = x;
+            this.y = y;
+            this.val = val;
+        }
+    }
+    private int[][] dir = {{1,0},{1,-1},{0,-1},{-1,-1},{-1,0},{-1,1},{0,1},{1,1}};
+    private boolean[][] visit;
+    private int m;
+    private int n;
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        int m = grid.length;
+        if(m == 0) return -1;
+        int n = grid[0].length;
+        if(grid[0][0] == 1||grid[m-1][n-1]==1)
+            return -1;
+        visit = new boolean[m][n];
+        this.m  = m;
+        this.n = n;
+        return bsf(grid,m,n);
+
+    }
+
+    private int bsf(int[][]grid,int m,int n) {
+        Node start = new Node(0,0,1);
+        visit[0][0] = true;
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(start);
+        while (!queue.isEmpty()){
+            Node node = queue.poll();
+            if(node.x == m-1&&node.y == n-1)
+                return node.val;
+            int val = node.val;
+            for(int i = 0;i<8;i++){
+                int x = node.x + dir[i][0];
+                int y = node.y+dir[i][1];
+                if(isArea(x,y)&&grid[x][y] == 0&&!visit[x][y]){
+                    queue.add(new Node(x,y,val+1));
+                    visit[x][y] = true;
+                }
+            }
+        }
+        return -1;
+    }
+
+    private boolean isArea(int x, int y) {
+        if(x>=0&&x<m&&y>=0&&y<n){
+            return true;
+        }
+        return false;
+    }
 }
